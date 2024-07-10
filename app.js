@@ -27,6 +27,7 @@
   ---- [07] Break The Logic To More Functions => Working on it.
   ---- [08] Every Time You Choose A Level The Game Refreshes To Start That Level => DONE
   ---- [09] Compare The Words To The Letter => Don't know how yet.
+  ---- [10] A Press Button To Start A New Game Without The Need To Reload The Page. => Don't know how yet.
 */
 
 // Array Of Words For Each Level Easy, Normal, And Hard
@@ -253,8 +254,7 @@ const hardWords = [
         saveScore(scoreGot.innerHTML, currentLevel);
         // Clear the interval when the game is finished
         clearInterval(interval);
-        // Set Game Over Flag
-        gameOver = true;
+        // Displays The Score Immediately After The Game Finishes
         displayScores();
       }
     } else {
@@ -269,6 +269,7 @@ const hardWords = [
       clearInterval(interval);
       // Set Game Over Flag
       gameOver = true;
+      // Displays The Score Immediately After The Game Finishes
       displayScores();
     }
   }
