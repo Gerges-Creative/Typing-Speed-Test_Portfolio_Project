@@ -1,5 +1,5 @@
 :root {
-  --main-color: #2196f3;
+  --main-color: #913b81;
 }
 * {
   box-sizing: border-box;
@@ -8,14 +8,19 @@
 }
 body {
   font-family: "Open Sans", sans-serif;
+  background-image: url('pics/keyboard.png');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: 100% 100%;
 }
 .game {
-  background-color: #eee;
+  /* background-color: #eee; */
   min-height: 100vh;
 }
 .container {
   margin: auto;
   max-width: 900px;
+  opacity: 93%;
 }
 .name {
   background-color: var(--main-color);
@@ -39,26 +44,28 @@ body {
   margin-left: 10px;
   padding: 5px 5px;
   border-radius: 50px;
-  background-color: #b2ffe8;
+  background-color: #e2ceff;
   border: #b7c1ff 2px solid;
 }
-.message span {
+.message span, .description span {
   font-weight: bold;
   color: #009688;
   margin-right: 5px;
   margin-left: 5px;
 }
-.message span::before {
+.message span::before,
+.description span::before {
   content: "[ ";
 }
-.message span::after {
+.message span::after,
+.description span::after {
   content: " ]";
 }
 .start {
   font-size: 20px;
   font-weight: bold;
   text-align: center;
-  background-color: #009688;
+  background-color: #975ad3;
   color: white;
   padding: 20px;
   cursor: pointer;
@@ -67,7 +74,7 @@ body {
   text-align: center;
   font-weight: bold;
   font-size: 60px;
-  color: var(--main-color);
+  color: white;
   user-select: none;
 }
 .input {
@@ -107,7 +114,7 @@ body {
   background-color: white;
   padding: 15px;
 }
-.control span {
+.control span, .description span {
   font-weight: bold;
   color: #009688;
 }
@@ -118,7 +125,7 @@ body {
   padding: 15px;
 }
 .finish .good {
-  color: var(--main-color);
+  color: #00fdff;
 }
 .finish .bad {
   color: red;
@@ -130,4 +137,11 @@ body {
   padding: 15px;
   justify-content: space-around;
   font-weight: bold;
+}
+
+.description {
+  background-color: white;
+  padding: 15px;
+  margin-top: 15px;
+  margin-bottom: 15px;
 }

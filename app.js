@@ -20,11 +20,13 @@
   [04] Your Trainings To Add Features
   ---- [01] Save Score To Local Storage With Date => DONE
   ---- [02] Choose Levels From Select Box => DONE
-  ---- [03] Break The Logic To More Functions => Don't know how yet.
+  ---- [03] Pressing Enter Checks The Word Immediatly => DONE
   ---- [04] Choose Array Of Words For Every Level => DONE
-  ---- [05] Write Game Instruction With Dynamic Values => Will do it later.
-  ---- [06] Add 3 Seconds For The First Word => Don't know how yet.
-  ---- [07] Pressing Enter Checks The Word Immediatly.
+  ---- [05] Add 3 Seconds For The First Word => DONE
+  ---- [06] Write Game Instruction With Dynamic Values => DONE
+  ---- [07] Break The Logic To More Functions => Working on it.
+  ---- [08] Every Time You Choose A Level The Game Refreshes To Start That Level => DONE
+  ---- [09] Compare The Words To The Letter => Don't know how yet.
 */
 
 // Array Of Words For Each Level Easy, Normal, And Hard
@@ -39,11 +41,16 @@ const easyWords = [
   "Test",
   "Funny",
   "Rust",
-  "world",
+  "World",
   "Cat",
   "Dog",
   "Bird",
-  "Apple"
+  "Apple",
+  "Bye",
+  "Java",
+  "Ant",
+  "Toy",
+  "Node"
   ];
 
   const normalWords = [
@@ -61,7 +68,10 @@ const easyWords = [
     "Cascade",
     "Working",
     "Keyboard",
-    "Playing"
+    "Playing",
+    "Seconds",
+    "Language",
+    "Friends"
   ];
 
 const hardWords = [
@@ -75,7 +85,12 @@ const hardWords = [
     "Xylophone",
     "University",
     "Encyclopedia",
-    "Hypothetical"
+    "Hypothetical",
+    "Sacrilegious",
+    "Paraphernalia",
+    "Minuscule",
+    "Orangutan",
+    "Computers"
   ];
 
   // This Will Contain The Words Of The Chosen Level
@@ -83,39 +98,91 @@ const hardWords = [
   
   // Setting Levels
   const lvls = {
-    "Easy": 6,
+    "Easy": 5,
     "Normal": 4,
-    "Hard": 3
+    "Hard": 4
   };
   
+  // Global Variables
   // Default Level
   let currentLevel;
   let currentLevelSeconds;
+  // Variable To Hold The Interval
+  let interval;
+  // Variable To Check If It's The First Word
+  let isFirstWord = true;
+  // Flag To Check If The Game Is Over
+  let gameOver = false;
 
   // Catch Selectors
   let startButton = document.querySelector(".start");
-  let lvlNameSpan = document.querySelector(".message .lvl");
-  let secondsSpan = document.querySelector(".message .seconds");
+  let lvlNameSpan = document.querySelectorAll("span.lvl"); // this one
+  let secondsSpan = document.querySelectorAll("span.seconds"); // this one
   let theWord = document.querySelector(".the-word");
   let upcomingWords = document.querySelector(".upcoming-words");
   let input = document.querySelector(".input");
   let timeLeftSpan = document.querySelector(".time span");
   let scoreGot = document.querySelector(".score .got");
-  let scoreTotal = document.querySelector(".score .total");
+  let scoreTotal = document.querySelectorAll("span.total"); // this one
   let finishMessage = document.querySelector(".finish");
-  let container = document.querySelector(".container");
+  let scoresContainer = document.querySelector(".scores-container");
   
+  // // Function To Assign Level Names
+  // function assignLevelNames(level, seconds) {
+  //   lvlNameSpan.forEach(span => {
+  //     span.innerHTML = level;
+  //   });
+  //   secondsSpan.forEach(span => {
+  //     span.innerHTML = seconds;
+  //   });
+  // }
+
+  // // Function To Assign Seconds And Total Score Which Will Be Reference To The Total Words
+  // function secondsTotal(total) {
+  //   scoreTotal.forEach(span => {
+  //     span.innerHTML = total;
+  //   });
+  // }
+
+// Function To Assign Level Names
+function assignLevelNames(level, seconds) {
+  console.log("Assigning level names:", level, seconds);
+  lvlNameSpan.forEach(span => {
+    console.log("Updating level name span:", span);
+    span.innerHTML = level;
+  });
+  secondsSpan.forEach(span => {
+    console.log("Updating seconds span:", span);
+    span.innerHTML = seconds;
+  });
+}
+
+// Function To Assign Seconds And Total Score Which Will Be Reference To The Total Words
+function secondsTotal(total) {
+  console.log("Assigning total score:", total);
+  scoreTotal.forEach(span => {
+    console.log("Updating score total span:", span);
+    span.innerHTML = total;
+  });
+}
   // Detect Chosen Level
   document.addEventListener('DOMContentLoaded', function () {
     const selectBox = document.getElementById('levelSelect');
 
+    // Load The Saved Difficulty From Local Storage If It Exists
+    const savedDifficulty = localStorage.getItem("selectedDifficulty");
+    if (savedDifficulty) {
+      selectBox.value = savedDifficulty;
+    }
     // Check and handle the initial value on page load
     const initialSelectedValue = selectBox.value;
     handleLevelChange(initialSelectedValue);
-
+    // Event Listener For When The User Changes Difficulty
     selectBox.addEventListener('change', function () {
         const selectedValue = selectBox.value;
         handleLevelChange(selectedValue);
+        // Save Difficulty To Local Storage
+        localStorage.setItem("selectedDifficulty", selectedValue)
     });
   });
 
@@ -125,21 +192,18 @@ const hardWords = [
     currentLevel = level;
     currentLevelSeconds = lvls[level]
 
-    lvlNameSpan.innerHTML = level;
-    secondsSpan.innerHTML = currentLevelSeconds;
+    assignLevelNames(level, currentLevelSeconds);
+    // secondsSpan.innerHTML = currentLevelSeconds;
     timeLeftSpan.innerHTML = currentLevelSeconds;
 
     if (level === 'Easy') {
-        console.log('Level Easy Selected');
-        scoreTotal.innerHTML = easyWords.length;
-        currentWords = easyWords.slice();
+      secondsTotal(easyWords.length);
+      currentWords = easyWords.slice();
     } else if (level === 'Normal') {
-        console.log('Level Normal Selected');
-        scoreTotal.innerHTML = normalWords.length;
-        currentWords = normalWords.slice();
+      secondsTotal(normalWords.length);
+      currentWords = normalWords.slice();
     } else if (level === 'Hard') {
-      console.log('Level Hard Selected');
-      scoreTotal.innerHTML = hardWords.length;
+      secondsTotal(hardWords.length);
       currentWords = hardWords.slice();
     }
   }
@@ -153,11 +217,16 @@ const hardWords = [
   startButton.onclick = function () {
     this.remove();
     input.focus();
+    // Reset Game Over Flag
+    gameOver = false;
     // Generate Word Function
     genWords();
   }
   
   function genWords() {
+    // Clear The Previous Interval If It Exists
+    if (interval) clearInterval(interval);
+
     // Get Random Word From Array
     let randomWord = currentWords[Math.floor(Math.random() * currentWords.length)];
     // Get Word Index
@@ -180,46 +249,75 @@ const hardWords = [
     startPlay();
   }
   
+  // Check The Word
+  function checkWord() {
+    // Prevent Multiple Game Over Messages
+    if (gameOver) return;
+
+    // Compare Words
+    if (theWord.innerHTML.toLowerCase() === input.value.toLowerCase()) {
+      // Empty Input Field
+      input.value = '';
+      // Increase Score
+      scoreGot.innerHTML++;
+      if (currentWords.length > 0) {
+        // Call Generate Word Function
+        genWords();
+      } else {
+        let span = document.createElement("span");
+        span.className = 'good';
+        let spanText = document.createTextNode("Congratz");
+        span.appendChild(spanText);
+        finishMessage.appendChild(span);
+        // Remove Upcoming Words Box
+        upcomingWords.remove();
+        // Save Score To Local Storage
+        saveScore(scoreGot.innerHTML, currentLevel);
+        // Clear the interval when the game is finished
+        clearInterval(interval);
+        // Set Game Over Flag
+        gameOver = true;
+      }
+    } else {
+      let span = document.createElement("span");
+      span.className = 'bad';
+      let spanText = document.createTextNode("Game Over");
+      span.appendChild(spanText);
+      finishMessage.appendChild(span);
+      // Save Score To Local Storage
+      saveScore(scoreGot.innerHTML, currentLevel);
+      // Clear the interval when the game is over
+      clearInterval(interval);
+      // Set Game Over Flag
+      gameOver = true;
+    }
+  }
+  
   function startPlay() {
-    timeLeftSpan.innerHTML = currentLevelSeconds;
-    let start = setInterval(() => {
+    if (isFirstWord) {
+      timeLeftSpan.innerHTML = currentLevelSeconds + 3;
+      isFirstWord = false;
+    } else {
+      timeLeftSpan.innerHTML = currentLevelSeconds;
+    }
+
+    interval = setInterval(() => {
       timeLeftSpan.innerHTML--;
       if (timeLeftSpan.innerHTML === "0") {
         // Stop Timer
-        clearInterval(start);
-        // Compare Words
-        if (theWord.innerHTML.toLowerCase() === input.value.toLowerCase()) {
-          // Empty Input Field
-          input.value = '';
-          // Increase Score
-          scoreGot.innerHTML++;
-          if (currentWords.length > 0) {
-            // Call Generate Word Function
-            genWords();
-          } else {
-            let span = document.createElement("span");
-            span.className = 'good';
-            let spanText = document.createTextNode("Congratz");
-            span.appendChild(spanText);
-            finishMessage.appendChild(span);
-            // Remove Upcoming Words Box
-            upcomingWords.remove();
-            // Save Score To Local Storage
-            saveScore(scoreGot.innerHTML, currentLevel);
-
-          }
-        } else {
-          let span = document.createElement("span");
-          span.className = 'bad';
-          let spanText = document.createTextNode("Game Over");
-          span.appendChild(spanText);
-          finishMessage.appendChild(span);
-          // Save Score To Local Storage
-          saveScore(scoreGot.innerHTML, currentLevel);
-        }
+        clearInterval(interval);
+        checkWord();
       }
     }, 1000);
   }
+
+  // Event Listener For Enter Press Key
+  input.addEventListener('keyup', function(event) {
+    if (event.key === 'Enter') {
+      clearInterval(interval);
+      checkWord();
+    }
+  });
 
   function saveScore(score, level) {
     const today = new Date();
@@ -237,9 +335,6 @@ const hardWords = [
 
   function displayScores() {
     let scores = JSON.parse(localStorage.getItem('typingGameScores')) || [];
-
-    let scoresContainer = document.createElement('div');
-    scoresContainer.className = 'scores-container';
   
     scores.forEach(entry => {
       let scoreEntry = document.createElement('div');
@@ -247,8 +342,12 @@ const hardWords = [
       scoreEntry.textContent = `Level: ${entry.level}, Score: ${entry.score}, Date: ${entry.date}`;
       scoresContainer.appendChild(scoreEntry);
     });
-  
-    container.appendChild(scoresContainer);
   }
 
   document.addEventListener('DOMContentLoaded', displayScores);
+
+  // Dynamic Description For The User
+  // let description = document.createElement('div');
+  // description.className = 'description';
+  // description.textContent = `You are now playing on [${currentLevel}]`;
+  // container.appendChild(description);
