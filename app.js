@@ -127,44 +127,23 @@ const hardWords = [
   let finishMessage = document.querySelector(".finish");
   let scoresContainer = document.querySelector(".scores-container");
   
-  // // Function To Assign Level Names
-  // function assignLevelNames(level, seconds) {
-  //   lvlNameSpan.forEach(span => {
-  //     span.innerHTML = level;
-  //   });
-  //   secondsSpan.forEach(span => {
-  //     span.innerHTML = seconds;
-  //   });
-  // }
+  // Function To Assign Level Names
+  function assignLevelNames(level, seconds) {
+    lvlNameSpan.forEach(span => {
+      span.innerHTML = level;
+    });
+    secondsSpan.forEach(span => {
+      span.innerHTML = seconds;
+    });
+  }
 
-  // // Function To Assign Seconds And Total Score Which Will Be Reference To The Total Words
-  // function secondsTotal(total) {
-  //   scoreTotal.forEach(span => {
-  //     span.innerHTML = total;
-  //   });
-  // }
+  // Function To Assign Seconds And Total Score Which Will Be Reference To The Total Words
+  function total(total) {
+    scoreTotal.forEach(span => {
+      span.innerHTML = total;
+    });
+  }
 
-// Function To Assign Level Names
-function assignLevelNames(level, seconds) {
-  console.log("Assigning level names:", level, seconds);
-  lvlNameSpan.forEach(span => {
-    console.log("Updating level name span:", span);
-    span.innerHTML = level;
-  });
-  secondsSpan.forEach(span => {
-    console.log("Updating seconds span:", span);
-    span.innerHTML = seconds;
-  });
-}
-
-// Function To Assign Seconds And Total Score Which Will Be Reference To The Total Words
-function secondsTotal(total) {
-  console.log("Assigning total score:", total);
-  scoreTotal.forEach(span => {
-    console.log("Updating score total span:", span);
-    span.innerHTML = total;
-  });
-}
   // Detect Chosen Level
   document.addEventListener('DOMContentLoaded', function () {
     const selectBox = document.getElementById('levelSelect');
@@ -193,17 +172,16 @@ function secondsTotal(total) {
     currentLevelSeconds = lvls[level]
 
     assignLevelNames(level, currentLevelSeconds);
-    // secondsSpan.innerHTML = currentLevelSeconds;
     timeLeftSpan.innerHTML = currentLevelSeconds;
 
     if (level === 'Easy') {
-      secondsTotal(easyWords.length);
+      total(easyWords.length);
       currentWords = easyWords.slice();
     } else if (level === 'Normal') {
-      secondsTotal(normalWords.length);
+      total(normalWords.length);
       currentWords = normalWords.slice();
     } else if (level === 'Hard') {
-      secondsTotal(hardWords.length);
+      total(hardWords.length);
       currentWords = hardWords.slice();
     }
   }
@@ -251,7 +229,7 @@ function secondsTotal(total) {
   
   // Check The Word
   function checkWord() {
-    // Prevent Multiple Game Over Messages
+    // Prevent Multiple Game Over Messages Through Pressing Enter
     if (gameOver) return;
 
     // Compare Words
@@ -277,6 +255,7 @@ function secondsTotal(total) {
         clearInterval(interval);
         // Set Game Over Flag
         gameOver = true;
+        displayScores();
       }
     } else {
       let span = document.createElement("span");
@@ -290,6 +269,7 @@ function secondsTotal(total) {
       clearInterval(interval);
       // Set Game Over Flag
       gameOver = true;
+      displayScores();
     }
   }
   
@@ -345,9 +325,3 @@ function secondsTotal(total) {
   }
 
   document.addEventListener('DOMContentLoaded', displayScores);
-
-  // Dynamic Description For The User
-  // let description = document.createElement('div');
-  // description.className = 'description';
-  // description.textContent = `You are now playing on [${currentLevel}]`;
-  // container.appendChild(description);
