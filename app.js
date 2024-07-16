@@ -128,7 +128,7 @@ const hardWords = [
   let finishMessage = document.querySelector(".finish");
   let scoresContainer = document.querySelector(".scores-container");
   
-  // Function To Assign Level Names
+  // Function To Assign Level Names And Seconds
   function assignLevelNames(level, seconds) {
     lvlNameSpan.forEach(span => {
       span.innerHTML = level;
@@ -138,7 +138,7 @@ const hardWords = [
     });
   }
 
-  // Function To Assign Seconds And Total Score Which Will Be Reference To The Total Words
+  // Function To Assign Total Score Which Will Be Reference To The Total Words
   function total(total) {
     scoreTotal.forEach(span => {
       span.innerHTML = total;
@@ -254,6 +254,8 @@ const hardWords = [
         saveScore(scoreGot.innerHTML, currentLevel);
         // Clear the interval when the game is finished
         clearInterval(interval);
+        // Set Game Over Flag
+        gameOver = true;
         // Displays The Score Immediately After The Game Finishes
         displayScores();
       }
