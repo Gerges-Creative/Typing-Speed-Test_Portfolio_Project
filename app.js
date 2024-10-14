@@ -163,6 +163,10 @@ const hardWords = [
         handleLevelChange(selectedValue);
         // Save Difficulty To Local Storage
         localStorage.setItem("selectedDifficulty", selectedValue)
+        // Refresh the page after selecting a new level
+        if (isFirstWord === false) {
+          location.reload();
+        }
     });
   });
 

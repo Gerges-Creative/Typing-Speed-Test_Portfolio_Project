@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Typing Test</title>
+        <link rel="stylesheet" href="styles.css">
+        <link rel="icon" type="image/x-icon" href="pics/text.png">
+    </head>
+    <body>
+        <div class="game">
+            <div class="name">Typing Speed Test Game</div>
+            <div class="container">
+              <div class="message">
+                  <select id="levelSelect">
+                    <option value="Easy">Easy</option>
+                    <option value="Normal">Normal</option>
+                    <option value="Hard">Hard</option>
+                  </select>
+                You Are Playing On
+                <span class="lvl"></span> Level
+                & You Have <span class="seconds"></span> Seconds To Type The Word
+              </div>
+              <div class="start">Start Playing</div>
+              <div class="the-word"></div>
+              <input type="text" class="input" />
+              <div class="upcoming-words">Words Will Show Here</div>
+              <div class="control">
+                <div class="time">Time Left: <span></span> Seconds</div>
+                <div class="score">
+                  Score: <span class="got">0</span> From <span class="total"></span>
+                </div>
+              </div>
+              <div class="finish"></div>
+              <div class="scores-container"></div>
+              <div class="description">
+                <h1>Welcome to the Typing Speed Test Game!</h1>
+                <p>Challenge your typing skills across different levels, each with a unique list of words tailored to the chosen difficulty. The game is designed to push your limits and improve your typing speed. Here's how it works:</p>
+                <ol>
+                  <li><strong>Levels & Difficulty:</strong><br>
+                  Each level presents a new challenge with a distinct set of words. The current level is <span class="lvl"></span>, where you have <span class="seconds"></span> seconds to type each word.
+                  </li>
+                  <li><strong>Extra Time for the First Word:</strong><br>
+                  To get you started, you'll have an additional 3 seconds for the first word. This gives you a moment to familiarize yourself with the word set and prepare for the challenge ahead.
+                  </li>
+                  <li><strong>Word Count:</strong><br>
+                  Each level contains a total of <span class="total"></span> words. Your goal is to type them as quickly and accurately as possible.
+                  </li>
+                  <li><strong>Scoring:</strong><br>
+                  Your last score will be displayed on the right, while the score of your current game will be shown on the left. Can you beat your previous score?
+                  </li>
+                </ol>
+                <h2>Instructions:</h2>
+                <ul>
+                  <li>Select your desired level from the dropdown menu.</li>
+                  <li>Press the "Start" button to begin the game.</li>
+                  <li>Type the word displayed as quickly and accurately as possible.</li>
+                  <li>Press "Enter" to submit each word and move to the next one.</li>
+                  <li>The game ends when you complete all the words or run out of time.</li>
+                </ul>
+                <p>Good luck and have fun improving your typing speed!</p>
+              </div>
+            </div>
+          </div>
+          <script src="app.js"></script>
+    </body>
+</html>

@@ -1,0 +1,19 @@
+{
+  "name": "typing-speed-test_portfolio_project",
+  "version": "1.0.0",
+  "description": "Welcome to the Typing Speed Test Game! This project transforms the practice of typing into an engaging and fun game, aiming to help users improve their typing speed and accuracy. Whether you're a beginner just starting out or an advanced typist looking for a challenge, this game has something for everyone.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Gerges-Creative/Typing-Speed-Test_Portfolio_Project.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Gerges-Creative/Typing-Speed-Test_Portfolio_Project/issues"
+  },
+  "homepage": "https://github.com/Gerges-Creative/Typing-Speed-Test_Portfolio_Project#readme"
+}
